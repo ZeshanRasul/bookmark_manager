@@ -7,7 +7,7 @@ gem 'dm-postgres-adapter'
 gem 'rack'
 gem 'sinatra'
 gem 'database_cleaner'
-
+gem 'rspec-sinatra'
 
 group :test do
   gem 'rspec'
