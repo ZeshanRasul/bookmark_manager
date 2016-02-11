@@ -4,11 +4,9 @@
     <li>
       Title: <%= link.bookmark_name %>
       URL:  <%= link.url %>
-      Tag: <%= link.tag %>
+      Tag:  <% link.tags.each do |tag| %>
+       <%= tag.tag %>
+      <%end%>
     </li>
-  <%end%>
+    <%end%>
   </ul>
-
-  <!-- <form action = '/link/add-new'>
-    <input type = "submit" name = "add link" >
-  <\form> -->
