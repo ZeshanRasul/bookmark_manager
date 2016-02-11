@@ -6,9 +6,15 @@ require_relative 'models/link'
 
 
 class Bookmark < Sinatra::Base
+  enable :sessions
+
+  get '/' do
+    redirect '/link'
+  end
 
   get '/link' do
     @link = Link.all
+    @user = session[:name]
     erb :index
   end
 
@@ -26,11 +32,20 @@ class Bookmark < Sinatra::Base
     redirect to ('/link')
   end
 
+  post '/new-user' do
+    User.create(name: params[:name], email: params[:email], password: params[:password])
+    session[:name] = params[:name]
+    redirect to '/link'
+  end
 
   get '/link/tag/:tag' do
     tag = Tag.first(tag: params[:tag])
     @link = tag ? tag.links : []
     erb :index
+  end
+
+  get '/user/new' do
+    erb :signup
   end
 
 

@@ -1,5 +1,3 @@
-require_relative '../data_mapper_setup.rb'
-
 class Link
   include DataMapper::Resource
 
