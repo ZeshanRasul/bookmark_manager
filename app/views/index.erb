@@ -1,7 +1,5 @@
 <h1> BOOKMARKS </h1>
-<% if current_user %>
-  <h2> Welcome <%= current_user.name %> </h2>
-<% end %>
+
 <ul id='link'>
   <% @link.each do |link| %>
     <li>

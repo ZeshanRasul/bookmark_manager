@@ -39,14 +39,17 @@ class Bookmark < Sinatra::Base
   end
 
   post '/new-user' do
-    user = User.create(name: params[:name], email: params[:email],
+    @user = User.create(name: params[:name], email: params[:email],
                        password: params[:password],
                        password_confirmation: params[:password_confirmation])
-    unless user.valid?
-      flash[:error] = "Error: Password mismatch"
-    else
-      session[:user_id] = user.id
+
+    session[:user_id] = @user.id
+
+    if @user.valid?
       redirect to '/link'
+    else
+      flash.now[:error] = "Error: Password mismatch"
+      erb :signup
     end
   end
 
@@ -57,6 +60,7 @@ class Bookmark < Sinatra::Base
   end
 
   get '/user/new' do
+    @user = User.new
     erb :signup
   end
 
