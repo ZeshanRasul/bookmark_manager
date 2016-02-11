@@ -22,5 +22,6 @@ feature 'Sign Up' do
       click_button('Submit')
       user = User.first
       expect(user).to eq nil
+      expect(page).to have_content("Error: Password mismatch")
     end
 end
