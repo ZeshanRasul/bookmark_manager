@@ -6,9 +6,9 @@ class User
   attr_reader :password
   attr_accessor :password_confirmation
 
-  property :id,                   Serial
-  property :email,                String
-  property :password_digest,      Text
+  property :id,                   Serial, required: true
+  property :email,                String, format: :email_address, required: true
+  property :password_digest,      Text, required: true
 
   validates_confirmation_of :password
   validates_presence_of :email
