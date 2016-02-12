@@ -22,7 +22,7 @@ feature 'Sign Up' do
       click_button('Submit')
       user = User.first
       expect(user).to eq nil
-      expect(page).to have_content("Error: Password mismatch")
+      expect(page).to have_content("Password does not match the confirmation")
     end
 
   scenario 'A user does not submit an email address' do
@@ -32,6 +32,7 @@ feature 'Sign Up' do
     fill_in('password', with: '0987')
     fill_in('password_confirmation', with: '0987')
     expect { click_button('Submit') }.not_to change(User, :count)
+    expect(page).to have_content("Email must not be blank")
   end
 
   scenario 'A user submits an incorrectly formatted email' do
@@ -42,4 +43,16 @@ feature 'Sign Up' do
     fill_in('password_confirmation', with: '0987')
     expect { click_button('Submit') }.not_to change(User, :count)
   end
+
+  scenario 'A user signs up with already registered email' do
+    User.create(name: 'Bob', email: 'bob@gmail.com', password: 'password', password_confirmation: 'password')
+    visit '/user/new'
+    fill_in('name', with: 'Hannah')
+    fill_in('email', with: 'bob@gmail.com')
+    fill_in('password', with: '0987')
+    fill_in('password_confirmation', with: '0987')
+    expect { click_button('Submit') }.not_to change(User, :count)
+    expect(page).to have_content("Email is already taken")
+  end
+
 end

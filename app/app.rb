@@ -48,7 +48,7 @@ class Bookmark < Sinatra::Base
     if @user.valid?
       redirect to '/link'
     else
-      flash.now[:error] = "Error: Password mismatch"
+      flash.now[:errors] = @user.errors.full_messages
       erb :signup
     end
   end
