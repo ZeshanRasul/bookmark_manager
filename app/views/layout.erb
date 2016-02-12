@@ -5,15 +5,16 @@
   </head>
 
   <body>
-    <% if current_user %>
+    <!-- <% if current_user %>
       <h2> Welcome <%= current_user.name %> </h2>
       <form method='post' action='/sessions'>
         <input type='hidden' name='_method' value='delete'>
         <input type='submit' value='Sign out'>
       </form>
-    <% end %>
-
-    <% if flash[:errors] && !flash[:errors].empty? %>
+    <% end %> -->
+    <%= partial :welcome %>
+    <%= partial :flash %> 
+    <!-- <% if flash[:errors] && !flash[:errors].empty? %>
       Please refer to the following errors below:
       <ul id='errors'>
         <% flash[:errors].each do |error| %>
@@ -25,7 +26,7 @@
       <div id='notice'>
         <%= flash[:notice] %>
       </div>
-      <% end %>
+      <% end %> -->
 
      <%= yield %>
   </body>
