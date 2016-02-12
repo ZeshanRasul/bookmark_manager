@@ -1,5 +1,4 @@
 ENV["RACK_ENV"] ||= "development"
-require 'byebug'
 require 'sinatra/base'
 require 'sinatra/flash'
 require 'bcrypt'
@@ -13,6 +12,7 @@ class Bookmark < Sinatra::Base
   enable :sessions
   register Sinatra::Flash
   set :session_secret, 'super secret'
+  use Rack::MethodOverride
 
   get '/' do
     redirect '/link'
@@ -56,12 +56,10 @@ class Bookmark < Sinatra::Base
   post '/user/signing-in' do
     user = User.authenticate(params[:email], params[:password])
 
-      if user.save
+      if user
         session[:user_id] = user.id
-
         redirect '/link'
       else
-
         flash.now[:errors] = ['The email or password is incorrect']
         erb :sign_in
     end
@@ -79,10 +77,14 @@ class Bookmark < Sinatra::Base
   end
 
   get '/user/sign-in' do
-
     erb :sign_in
   end
 
+  delete'/user/sign-out' do
+    session[:user_id] = nil
+    flash.keep[:notice] = 'Goodbye!'
+    redirect '/link'
+  end
 
   # start the server if ruby file executed directly
   run! if app_file == $0
