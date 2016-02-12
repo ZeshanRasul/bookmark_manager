@@ -5,14 +5,14 @@ module SessionHelpers
   end
 
   def sign_in
-    visit '/user/sign-in'
+    visit '/sessions/new'
     fill_in 'email', with: 'bob@gmail.com'
     fill_in 'password', with: 'password'
     click_button'Sign in'
   end
 
   def sign_up
-    visit('/user/new')
+    visit('/users/new')
     fill_in('name', with: 'Bob')
     fill_in('email', with: 'bob@gmail.com')
     fill_in('password', with: 'password')

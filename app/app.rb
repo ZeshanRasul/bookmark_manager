@@ -15,75 +15,76 @@ class Bookmark < Sinatra::Base
   use Rack::MethodOverride
 
   get '/' do
-    redirect '/link'
+    redirect '/links'
   end
 
-  get '/link' do
+  get '/links' do
     @link = Link.all
     @user = session[:name]
-    erb :index
+    erb :'links/index'
   end
 
-  get '/link/add-new' do
-    erb :add_new
+  get '/links/new' do
+    erb :'links/new'
   end
 
-  post '/link' do
+  post '/links' do
     link = Link.create(url: params[:url], bookmark_name: params[:bookmark_name])
     params[:tag].split(", ").each do |new_tag|
       new_tags =Tag.create(bookmark_name: params[:bookmark_name], tag: new_tag)
     link.tags << new_tags
     link.save
       end
-    redirect to ('/link')
+    redirect to ('/links')
   end
 
-  post '/new-user' do
+  post '/users' do
     @user = User.create(name: params[:name], email: params[:email],
                        password: params[:password],
                        password_confirmation: params[:password_confirmation])
 
-    session[:user_id] = @user.id
 
     if @user.valid?
-      redirect to '/link'
+      session[:user_id] = @user.id
+
+      redirect to '/links'
     else
       flash.now[:errors] = @user.errors.full_messages
-      erb :signup
+      erb :'users/new'
     end
   end
 
-  post '/user/signing-in' do
+  post '/sessions' do
     user = User.authenticate(params[:email], params[:password])
 
       if user
         session[:user_id] = user.id
-        redirect '/link'
+        redirect '/links'
       else
         flash.now[:errors] = ['The email or password is incorrect']
-        erb :sign_in
+        erb :'sessions/new'
     end
   end
 
-  get '/link/tag/:tag' do
+  get '/links/tags/:tag' do
     tag = Tag.first(tag: params[:tag])
     @link = tag ? tag.links : []
-    erb :index
+    erb :'links/index'
   end
 
-  get '/user/new' do
+  get '/users/new' do
     @user = User.new
-    erb :signup
+    erb :'users/new'
   end
 
-  get '/user/sign-in' do
-    erb :sign_in
+  get '/sessions/new' do
+    erb :'sessions/new'
   end
 
-  delete'/user/sign-out' do
+  delete'/sessions' do
     session[:user_id] = nil
     flash.keep[:notice] = 'Goodbye!'
-    redirect '/link'
+    redirect '/links'
   end
 
   # start the server if ruby file executed directly

@@ -9,7 +9,7 @@ feature 'View Link' do
   scenario 'go to homepage and see a list of link' do
     Link.create(url: 'http://www.bookmark.com', bookmark_name: 'Favorite link')
 
-    visit '/link'
+    visit '/links'
     expect(page.status_code).to eq 200
 
      within 'ul#link' do

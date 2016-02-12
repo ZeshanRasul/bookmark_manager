@@ -11,7 +11,7 @@ feature 'Sign Up' do
   end
 
   scenario 'A user submits a different confirmation password' do
-      visit '/user/new'
+      visit '/users/new'
       fill_in('name', with: 'Gill')
       fill_in('email', with: 'gill@obo.com')
       fill_in('password', with: '0987')
@@ -23,7 +23,7 @@ feature 'Sign Up' do
     end
 
   scenario 'A user does not submit an email address' do
-    visit '/user/new'
+    visit '/users/new'
     fill_in('name', with: 'Gill')
     fill_in('email', with: nil)
     fill_in('password', with: '0987')
@@ -33,7 +33,7 @@ feature 'Sign Up' do
   end
 
   scenario 'A user submits an incorrectly formatted email' do
-    visit '/user/new'
+    visit '/users/new'
     fill_in('name', with: 'Geb')
     fill_in('email', with: 'hasdfjal')
     fill_in('password', with: '0987')
@@ -43,7 +43,7 @@ feature 'Sign Up' do
 
   scenario 'A user signs up with already registered email' do
     User.create(name: 'Bob', email: 'bob@gmail.com', password: 'password', password_confirmation: 'password')
-    visit '/user/new'
+    visit '/users/new'
     fill_in('name', with: 'Hannah')
     fill_in('email', with: 'bob@gmail.com')
     fill_in('password', with: '0987')
