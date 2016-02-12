@@ -1,5 +1,5 @@
 ENV["RACK_ENV"] ||= "development"
-
+require 'byebug'
 require 'sinatra/base'
 require 'sinatra/flash'
 require 'bcrypt'
@@ -53,6 +53,20 @@ class Bookmark < Sinatra::Base
     end
   end
 
+  post '/user/signing-in' do
+    user = User.authenticate(params[:email], params[:password])
+
+      if user.save
+        session[:user_id] = user.id
+
+        redirect '/link'
+      else
+
+        flash.now[:errors] = ['The email or password is incorrect']
+        erb :sign_in
+    end
+  end
+
   get '/link/tag/:tag' do
     tag = Tag.first(tag: params[:tag])
     @link = tag ? tag.links : []
@@ -62,6 +76,11 @@ class Bookmark < Sinatra::Base
   get '/user/new' do
     @user = User.new
     erb :signup
+  end
+
+  get '/user/sign-in' do
+
+    erb :sign_in
   end
 
 
